@@ -35,7 +35,9 @@
   } */
 
 
-  /*  */
+  /***
+   
+   ***/
   * {
 		box-sizing: border-box;
 	}
@@ -83,24 +85,6 @@
 		border: none;
 	}
 	/* main icon */
-	._profile1 {
-		height: 3em; /*height == width*/
-		width: 3em;
-		border-radius: 80%;
-		overflow: hidden;
-	}
-	.fixedbutton1{
-		position: fixed;
-		bottom: 10%;
-		right: 3%; 
-		text-align:center;
-	}
-	.fixedbutton2{
-		position: fixed;
-		top: 12%;
-		right: 3%; 
-	  	text-align:center;
-	}
 	.imenuSize {
 		font-size: 100px;
 		margin-bottom:30px;

@@ -1,17 +1,24 @@
-<div class="container">
-    <div class="jumbotron mt-5">
-        <div class="col-sm-8 mx-auto">
-            <h1 class="text-center">PROFILE</h1>
+<app-header></app-header>
+<div  class="container-fluid body-content">
+    <div class="container texte" style="margin-top:30px">
+        <div class="container">
+            <div class="jumbotron mt-5">
+                <div class="col-sm-8 mx-auto">
+                    <h1 class="text-center">PROFILE</h1>
+                </div>
+                <table class="table col -md-8 mx-auto">
+                    <tr>
+                        <td>Name</td>
+                        <td>{{ deatils?.user.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>{{ deatils?.user.email }}</td>
+                    </tr>
+                </table>
+            </div>
         </div>
-        <table class="table col -md-8 mx-auto">
-            <tr>
-                <td>Name</td>
-                <td>{{ deatils?.user.name }}</td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td>{{ deatils?.user.email }}</td>
-            </tr>
-        </table>
     </div>
+    <app-button></app-button>
 </div>
+<app-footer></app-footer>

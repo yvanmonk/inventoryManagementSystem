@@ -1,1 +1,88 @@
-<p>categories works!</p>
+<!-- header -->
+<app-header></app-header>
+
+<!-- start display Account -->
+<div class="container-fluid body-content">
+    <div class="container texte" style="margin-top:30px; margin-bottom: 30px">
+        <button type="button" style="margin-bottom: 30px;" routerLink = "/inventory" class="btn btn-outline-primary mr-2" placement="right" ngbTooltip="Add an account">
+            <i class="icon ion-arrow-return-left" style="font-size:25px;"></i>  Back
+          </button>
+        <div class="margin-bottom:35px">
+            <h5 style="color:gray">Category</h5>
+            <hr/>
+        </div>
+        <div *ngIf="updateSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success</strong>     You have successfully update an existing product.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div *ngIf="deletedSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success</strong>     You have successfully delete an product.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div *ngIf="insertedSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success</strong>     You have successfully create a new product.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div *ngIf="success_delete" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Error</strong>       You have missed creating account.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+            <div id="data-grid-demo">
+                <dx-data-grid 
+                    id="gridContainer"
+                    [dataSource]="dataSource"
+                    keyExpr="id"
+                    [showBorders]="true"
+                    [columnAutoWidth]="true"
+                    (onRowInserted)="onRowInserted($event)"
+                    (onRowUpdated)="onRowUpdated($event)"
+                    (onRowRemoved)="onRowRemoved($event)">
+                    <dxo-paging [enabled]="true" [pageSize]="15"></dxo-paging>
+                    <dxo-export [enabled]="true" fileName="Category of Product" [allowExportSelectedData]="true"></dxo-export>
+                    <dxo-selection mode="multiple"></dxo-selection>
+                    <dxo-group-panel [visible]="true"></dxo-group-panel>
+                    <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+                    <!-- <dxo-scrolling mode="virtual"></dxo-scrolling> -->
+                    <dxo-remote-operations [filtering]="true"></dxo-remote-operations>
+                    <dxo-editing mode="popup" [allowUpdating]="true" [refreshMode]="refreshMode"
+                    [allowAdding]="true" [allowDeleting]="true">
+                        <dxo-popup
+                            title="Add Categories"
+                            [showTitle]="true"
+                            [width]="700"
+                            [height]="300"
+                            [position]="{ my: 'center', at: 'center', of: window }">
+                        </dxo-popup>
+                        <dxo-form>
+                            <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+                                <dxi-item dataField="name"></dxi-item>
+                                <dxi-item
+                                    dataField="description"
+                                    editorType="dxTextArea"
+                                    [colSpan]="2"
+                                    [editorOptions]="{ height: 100 }">
+                                </dxi-item>
+                            </dxi-item>
+                        </dxo-form>
+                    </dxo-editing>
+                    
+                    <dxi-column dataField="name" caption="Category Name"
+                    [width]="200"></dxi-column>
+                    <dxi-column dataField="description" caption="Description"></dxi-column>
+                </dx-data-grid>
+            </div>
+    </div>
+    <app-button></app-button>
+</div>
+<!-- end display Account -->
+
+<!-- footer -->
+<app-footer></app-footer>

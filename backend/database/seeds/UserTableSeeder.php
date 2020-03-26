@@ -25,9 +25,11 @@ class UserTableSeeder extends Seeder
 			DB::table('users')->insert([
 				'name' => 'name' . $i,
 				'first_name' => 'first_name' . $i,
-				'tel' => 'tel' . $i,
+				'phone' => 'tel' . $i,
 				'email' => 'email' . $i ,
 				'role' => 'role' . $i ,
+				'city' => 'city' . $i ,
+				'address' => 'address' . $i ,
 				'password' => 'password' . $i,
 				'poste' => 'poste' . $i,
 				'created_at' => $date,

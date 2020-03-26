@@ -17,7 +17,6 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             $table->string('name', 100)->default(null);
             $table->longText('description')->default(null);
-        
             $table->timestamps();
         });
     }
@@ -29,6 +28,7 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('categories');
     }
 }

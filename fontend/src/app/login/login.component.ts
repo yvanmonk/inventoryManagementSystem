@@ -1,37 +1,63 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService, TokenPayload } from "src/app/authentication.service";
-import { HttpClient } from "@angular/common/http";
+import { AuthenticationService , TokenPayload} from "../services/authentication.service";
+import { User } from '../../entities/User';
+// import { TokenService } from '../services/token.service';
 import { Router } from "@angular/router";
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  providers: [AuthenticationService]
 })
-export class LoginComponent {
-  credentials :  TokenPayload = {
+export class LoginComponent implements OnInit{
+  
+  error = null;
+  bad_request = null;
+  loading = false;
+  
+  credentials: TokenPayload = {
     id: 0,
     name: '',
     email: '',
     password: ''
   }
-  data = new FormGroup({
-    email: new FormControl(),
-    password: new FormControl()
-  })
-
-
-  constructor(private auth: AuthenticationService, private router: Router, private http: HttpClient) { }
-
-  login(){
-    this.auth.login(this.data.get('email').value, this.data.get('password').value).subscribe(
-      () => {
-        this.router.navigateByUrl('/home')
-      },
-      err => {
-        console.error(err)
+  constructor(private _auth: AuthenticationService, private _router: Router) { 
+      if(this._auth.isLoggedIn()){
+        this._router.navigateByUrl('/home')
       }
-    )
+     }
+
+  initLoginForm(){
+
   }
+
+  ngOnInit(){
+        
+  }
+
+  login() {
+    this.loading = true;
+    this._auth.login(this.credentials).subscribe(
+    () => {
+      this._router.navigateByUrl('/home')
+      
+    },
+    err => {
+      this.error = err.error.error
+      if(this.error == undefined){
+        this.bad_request = true
+        this.loading = false;
+        console.log(this.bad_request)
+        return this.bad_request
+      }else{
+        this.loading = false;
+        return this.error
+      }
+    });
+  }
+
 }
+

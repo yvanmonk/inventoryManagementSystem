@@ -31,6 +31,7 @@ class ProductsTableSeeder extends Seeder
 					'statut' => 'statut' . $i,
 					'measure' => 'measure' . $i,
 					'price' => 'price' . $i,
+					'category_id' => $i,
 					'created_at' => $date,
 					'updated_at' => $date
 				));

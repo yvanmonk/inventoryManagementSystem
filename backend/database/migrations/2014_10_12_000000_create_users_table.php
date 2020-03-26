@@ -17,9 +17,11 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('first_name')->default(null);
-            $table->string('tel')->default(null);
+            $table->string('phone')->default(null);
             $table->string('poste')->default(null);
             $table->string('role')->default(null);
+            $table->string('city')->default(null);
+            $table->string('address')->default(null);
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -35,6 +37,7 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('users');
     }
 }

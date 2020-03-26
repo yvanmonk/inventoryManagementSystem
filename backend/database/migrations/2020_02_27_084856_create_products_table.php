@@ -21,7 +21,8 @@ class CreateProductsTable extends Migration
             $table->string('statut', 245)->default(null);
             $table->string('measure', 245)->default(null);
             $table->string('price', 245)->default(null);
-
+            $table->integer('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -33,6 +34,7 @@ class CreateProductsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('products');
     }
 }

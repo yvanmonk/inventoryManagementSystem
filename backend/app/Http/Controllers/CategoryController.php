@@ -15,7 +15,6 @@ class CategoryController extends Controller
     public function index()
     {
         $category = Category::all();
-
         return response()->json($category);
     }
 
@@ -38,6 +37,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $catRequest = Category::create($request->all());
+        return response()->json(['success' => true, 'catRequest'=> $catRequest], 201);
     }
 
     /**
@@ -49,6 +50,8 @@ class CategoryController extends Controller
     public function show($id)
     {
         //
+        $category = Category::findOrFail($id);
+        return response()->json($category);
     }
 
     /**
@@ -72,6 +75,9 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $catUpdate = Category::findOrFail($id);
+        $catUpdate->update($request->all());
+        return response()->json(['success' => true, 'catUpdate'=> $catUpdate], 200);
     }
 
     /**
@@ -80,8 +86,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         //
+        $catDestroy = Category::findOrFail($id);
+        $catDestroy->delete($request->all());
+        return response()->json(['success' => true, 'catDestroy'=> $catDestroy], 201);
     }
 }

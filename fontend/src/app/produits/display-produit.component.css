@@ -1,0 +1,7 @@
+::ng-deep #data-grid-demo {
+    min-height: 530px;
+}
+.texte{
+    padding-top:30px; 
+    padding-bottom:30px
+}

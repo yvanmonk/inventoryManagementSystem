@@ -37,7 +37,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $prodrequest = Product::create($request->all());
-        return response()->json($prodrequest);
+        return response()->json;
     }
 
     /**
@@ -48,7 +48,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $prod = Product::find($id);
+        $prod = Product::findOrFail($id);
         return response()->json($prod);
 
     }
@@ -75,7 +75,7 @@ class ProductController extends Controller
     {
         $produpdate = Product::findOrFail($id);
         $produpdate->update($request->all());
-        return response()->json($produpdate);
+        return response()->json(['success' => true, 'produpdate'=> $produpdate], 200);
     }
 
     /**
@@ -84,10 +84,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $proddestroy = Product::findOrFail($id);
         $proddestroy->delete($request->all());
-        return response()->json($proddestroy);
+        return response()->json(['success' => true, 'proddestroy'=> $proddestroy], 201);
     }
 }

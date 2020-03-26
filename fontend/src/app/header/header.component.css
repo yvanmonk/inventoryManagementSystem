@@ -1,0 +1,6 @@
+._profile1 {
+	height: 3em; /*height == width*/
+	width: 3em;
+	border-radius: 80%;
+	overflow: hidden;
+}
