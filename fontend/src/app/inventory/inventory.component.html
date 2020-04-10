@@ -2,13 +2,16 @@
 <app-header></app-header>
 <!-- end header -->
 <div class="container-fluid body-content" >
-    <div class="container texte" style="margin-top:30px; ">
+    <div class="container texte" style="margin-top:30px; margin-bottom: 30px">
+        <button type="button" style="margin-bottom: 30px;" routerLink = "/home" class="btn btn-outline-primary mr-2" placement="right" ngbTooltip="Add an account">
+            <i class="icon ion-arrow-return-left" style="font-size:22px;"></i>  Back
+          </button>
         <div class="box">
             <button type="button" routerLink = "/liste_produits" class="btn btn-outline-primary mr-2">
                 <i class="icon ion-ios-filing-outline"></i>  Products
             </button>
             <button type="button" routerLink = "/liste_categories" class="btn btn-outline-primary mr-2">
-                <i class="icon ion-ios-basket"></i> Category
+                <i class="icon ion-ios-filing-outline"></i> Category
             </button>
          </div>
     </div>

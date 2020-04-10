@@ -42,49 +42,33 @@
                     keyExpr="id"
                     [showBorders]="true"
                     [columnAutoWidth]="true"
+                    [rowAlternationEnabled]="true"
                     (onRowInserted)="onRowInserted($event)"
                     (onRowUpdated)="onRowUpdated($event)"
                     (onRowRemoved)="onRowRemoved($event)">
+
                     <dxo-paging [enabled]="true" [pageSize]="15"></dxo-paging>
                     <dxo-export [enabled]="true" fileName="Product" [allowExportSelectedData]="true"></dxo-export>
                     <dxo-selection mode="multiple"></dxo-selection>
                     <dxo-group-panel [visible]="true"></dxo-group-panel>
                     <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
-                    <!-- <dxo-scrolling mode="virtual"></dxo-scrolling> -->
                     <dxo-remote-operations [filtering]="true"></dxo-remote-operations>
     
-                    <dxo-editing mode="popup" [allowUpdating]="true" [refreshMode]="refreshMode"
-                    [allowAdding]="true" [allowDeleting]="true">
-                        <dxo-popup
-                            title="Add Product"
-                            [showTitle]="true"
-                            [width]="700"
-                            [height]="400"
-                            [position]="{ my: 'center', at: 'center', of: window }">
-                        </dxo-popup>
-                        <dxo-form>
-                            <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
-                                <dxi-item dataField="name"></dxi-item>
-                                <dxi-item dataField="barcode"></dxi-item>
-                                <dxi-item dataField="statut"></dxi-item>
-                                <dxi-item dataField="measure"></dxi-item>
-                                <dxi-item dataField="price"></dxi-item>
-                                <dxi-item
-                                    dataField="description"
-                                    editorType="dxTextArea"
-                                    [colSpan]="2"
-                                    [editorOptions]="{ height: 100 }">
-                                </dxi-item>
-                            </dxi-item>
-                        </dxo-form>
+                    <dxo-editing mode="form" [allowUpdating]="true" [refreshMode]="refreshMode"
+                                 [allowAdding]="true" [allowDeleting]="true">
                     </dxo-editing>
                     
                     <dxi-column dataField="name" caption="Product Name"></dxi-column>
                     <dxi-column dataField="barcode" caption="Barcode" ></dxi-column>
-                    <dxi-column dataField="statut" caption="Statut" ></dxi-column>
                     <dxi-column dataField="measure" caption="Measure" ></dxi-column>
                     <dxi-column dataField="price" caption="Price" ></dxi-column>
-                    <dxi-column dataField="description" [visible]="false"></dxi-column>
+                    <dxi-column dataField="category_id" caption="Categorie">
+                        <dxo-lookup [dataSource]="categories" displayExpr="name" valueExpr="id"></dxo-lookup>
+                    </dxi-column>
+                    <dxi-column dataField="description" caption="Description" [visible]="false">
+                        <dxo-form-item [colSpan]="2" editorType="dxTextArea" [editorOptions]="{ height: 100 }">
+                        </dxo-form-item>
+                    </dxi-column>
                     
                 </dx-data-grid>
             </div>

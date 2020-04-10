@@ -41,6 +41,18 @@ export interface UserAc {
   poste: string
   role: string
 }
+export interface UserStaff {
+  id: number
+  name: string
+  first_name: string
+  email: string
+  password: string
+  phone: string
+  city: string
+  address: string
+  poste: string
+  role: string
+}
 
 interface TokenResponse{
   token: string
@@ -117,6 +129,17 @@ export class AuthenticationService {
       { headers: {'Content-Type': 'application/json'} }
     )
   }
+  /**
+   * Create a Staff on Database
+   */
+  public create_staff(user: UserStaff): Observable<any> {
+    console.log(user)
+    return this.http.post(
+      '/api/createStaff', 
+      user, 
+      { headers: {'Content-Type': 'application/json'} }
+    )
+  }
 
   /**
    *   public display_users
@@ -127,7 +150,35 @@ export class AuthenticationService {
 		  { headers:{Authorization: 'Bearer ${this.getToken()}'} }
 		)
   }
-  
+  public display_users2(): Observable<any> {
+		return this.http.get(
+		  '/api/userer2', 
+		  { headers:{Authorization: 'Bearer ${this.getToken()}'} }
+		)
+  }
+
+  /**
+   *   public get
+   */
+  getRole() {
+    return ["admin", "staff"];
+  }
+  /**
+   *   public display_users
+   */
+  // getEnterKeyDirections() {
+  //     return ["none", "column", "row"];
+  // }
+
+  /**
+   *   public display_users
+   */
+  public display_staff(): Observable<any> {
+		return this.http.get(
+		  '/api/userStaff', 
+		  { headers:{Authorization: 'Bearer ${this.getToken()}'} }
+		)
+  }
   		/**
 		 * delete_products
 		 */

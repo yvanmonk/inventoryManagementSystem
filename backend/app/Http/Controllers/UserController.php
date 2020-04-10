@@ -26,55 +26,105 @@ class UserController extends Controller
     public function index()
     {
         
-        $user = User::get();
+        $user = User::where("role", "admin")->get();
         return response()->json(['user' => $user], 200);
     }
-
+    public function alle()
+    {
+        $user = User::all();
+        return response()->json(['user' => $user], 200);
+    }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function staffIndex()
+    {
+        $user = User::where("role", "staff")->get();
+        return response()->json(['user' => $user], 200);
+    }
+    
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function createStaff(Request $request)
     {
-        //
+        $staff = User::where('name', $request->get('name'))
+                    ->where('phone', $request->get('phone'))
+                    ->where('poste', $request->get('poste'))->first();
+
+        if(!$staff){
+            $validator = Validator::make($request->json()->all(), [
+                'name' => 'required|string|max:255',
+                'first_name' => 'required|string|max:255',
+                'phone' => 'required|string|max:255',
+                'city' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'poste' => 'required|string|max:255'
+            ]);
+            if($validator->fails()){
+                return response()->json($validator->errors()->toJson(), 400);
+            }
+
+            $user = User::create([
+                'name' => $request->json()->get('name'),
+                'first_name' => $request->json()->get('first_name'),
+                'email' => $request->json()->get('email'),
+                'password' => $request->json()->get('password'),
+                'phone' => $request->json()->get('phone'),
+                'poste' => $request->json()->get('poste'),
+                'role' => "staff",
+                'city' => $request->json()->get('city'),
+                'address' => $request->json()->get('address')
+            ]);
+            return response()->json(["success" => true, 'user' => $user], 201);
+        }
+        return response()->json(["error" => false, "message" => "Staff already exist"], 400);
     }
 
  
     public function register(Request $request)
     {
-        $validator = Validator::make($request->json()->all(), [
-            'name' => 'required|string|max:255',
-            'first_name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-            'phone' => 'required|string|max:255',
-            'city' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'poste' => 'required|string|max:255',
-            'role' => 'required|string|max:255'
-        ]);
+        $user_account = User::where('name', $request->get('name'))->where('phone', $request->get('phone'))->first();
+
+        if(!$user_account){
+            $validator = Validator::make($request->json()->all(), [
+                'name' => 'required|string|max:255',
+                'first_name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:6',
+                'phone' => 'required|string|max:255',
+                'city' => 'required|string|max:255',
+                'address' => 'required|string|max:255',
+                'poste' => 'required|string|max:255'
+            ]);
 
 
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
+            if($validator->fails()){
+                return response()->json($validator->errors()->toJson(), 400);
+            }
 
-        $user = User::create([
-            'name' => $request->json()->get('name'),
-            'first_name' => $request->json()->get('first_name'),
-            'email' => $request->json()->get('email'),
-            'password' => Hash::make($request->json()->get('password')),
-            'phone' => $request->json()->get('phone'),
-            'poste' => $request->json()->get('poste'),
-            'role' => $request->json()->get('role'),
-            'city' => $request->json()->get('city'),
-            'address' => $request->json()->get('address')
-        ]);
-        $token = JWTAuth::fromUser($user);
+            $user = User::create([
+                'name' => $request->json()->get('name'),
+                'first_name' => $request->json()->get('first_name'),
+                'email' => $request->json()->get('email'),
+                'password' => Hash::make($request->json()->get('password')),
+                'phone' => $request->json()->get('phone'),
+                'poste' => $request->json()->get('poste'),
+                'role' => "admin",
+                'city' => $request->json()->get('city'),
+                'address' => $request->json()->get('address')
+            ]);
+            $token = JWTAuth::fromUser($user);
 
-        // return response()->json(['success' => true, 'user' => $user, 'token'=> $token], 201);
-        return response()->json(['success' => true, 'user' => $user, 'token'=> $token], 201);
+            // return response()->json(['success' => true, 'user' => $user, 'token'=> $token], 201);
+            return response()->json(['success' => true, 'user' => $user, 'token'=> $token], 201);
+        } 
+        return response()->json(['error' => false, "message" => "User name and phone number already exist"], 400);
+
     }
 
 
@@ -155,7 +205,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->update($request->all());
-        return response()->json(['user' => $user,'message' => 'User Updated Successfully'], 200);
+        return response()->json(['success' => true, 'user' => $user], 200);
     }
 
 
@@ -170,6 +220,6 @@ class UserController extends Controller
         //
         $user = User::find($id);
         $user->delete();
-        return response()->json(['user' => $user,'message' => 'User Deleted Successfully'], 200);
+        return response()->json(['success' => true, 'user' => $user], 200);
     }
 }

@@ -41,47 +41,42 @@
                             [dataSource]="dataSource"
                             keyExpr="id"
                             [showBorders]="true"
+                            [rowAlternationEnabled]="true"
                             (onRowInserted)="onRowInserted($event)"
                             (onRowUpdated)="onRowUpdated($event)"
                             (onRowRemoved)="onRowRemoved($event)">
+
                             <dxo-paging [enabled]="true" [pageSize]="15"></dxo-paging>
                             <dxo-export [enabled]="true" fileName="Staff" [allowExportSelectedData]="true"></dxo-export>
                             <dxo-selection mode="multiple"></dxo-selection>
                             <dxo-group-panel [visible]="true"></dxo-group-panel>
                             <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
-                            <!-- <dxo-scrolling mode="virtual"></dxo-scrolling> -->
-                            <!-- <dxo-paging [enabled]="false"></dxo-paging> -->
+
                             <dxo-remote-operations [filtering]="true"></dxo-remote-operations>
-                            <dxo-editing mode="popup" [allowUpdating]="true" [refreshMode]="refreshMode"
-                                        [allowAdding]="true" [allowDeleting]="true">
-                                <dxo-popup
-                                    title="Add a Staff"
-                                    [showTitle]="true"
-                                    [width]="700"
-                                    [height]="525"
-                                    [position]="{ my: 'center', at: 'center', of: window }">
-                                </dxo-popup>
-                                <dxo-form>
-                                    <dxi-item itemType="group" caption="Staff Info" [colCount]="2" [colSpan]="2">
-                                        <dxi-item dataField="first_name" caption="First Name"></dxi-item>
-                                        <dxi-item dataField="name" caption="Name"></dxi-item>
-                                        <dxi-item dataField="poste" caption="Poste"></dxi-item>
-                                        <dxi-column dataField="role" caption="Role" ></dxi-column>
-                                    </dxi-item>
-                                    <dxi-item itemType="group" caption="Home Address" [colCount]="2" [colSpan]="2">
-                                        <dxi-column dataField="address" caption="Address"></dxi-column>
-                                        <dxi-item dataField="phone" caption="Phone Number"></dxi-item>
-                                        <dxi-item dataField="city" caption="City"></dxi-item>
-                                    </dxi-item>
-                                </dxo-form>
-                            </dxo-editing>
-                            <dxi-column dataField="name" caption="Name"></dxi-column>
-                            <dxi-column dataField="first_name" caption="First Name" ></dxi-column>
-                            <dxi-column dataField="poste" caption="Poste" ></dxi-column>
-                            <dxi-column dataField="phone" caption="Phone Number" ></dxi-column>
-                            <dxi-column dataField="role" caption="Role" ></dxi-column>
+                            <dxo-editing mode="form" [allowUpdating]="true" [refreshMode]="refreshMode"
+                            [allowAdding]="true" [allowDeleting]="true"></dxo-editing>
+                            
+                            <dxi-column dataField="name" caption="Name">
+                                <dxi-validation-rule type = "required" message = "Name is required"></dxi-validation-rule>
+                            </dxi-column>
+                            <dxi-column dataField="first_name" caption="First Name"></dxi-column>
+                            <dxi-column dataField="poste" caption="Poste"></dxi-column>
+                            <dxi-column dataField="phone" caption="Phone Number"
+                                [editorOptions]="{ 
+                                    mask: '+(237) 000-00-00-00',
+                                    maskRules: phoneRules,
+                                    useMaskedValue: true,
+                                    maskInvalidMessage: 'The phone must have a correct CMR phone format'
+                                }">
+                                <dxi-validation-rule 
+                                    type="pattern"
+                                    [pattern]="phonePattern"
+                                    message="The phone must have a correct CMR phone format">
+                                </dxi-validation-rule>
+                            </dxi-column>
                             <dxi-column dataField="city" caption="City" ></dxi-column>
-                            <dxi-column dataField="address" caption="Address"></dxi-column>                  
+                            <dxi-column dataField="address" caption="Address"></dxi-column>
+                            
                         </dx-data-grid>
             </div>
     </div>

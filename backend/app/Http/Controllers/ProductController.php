@@ -36,8 +36,17 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $prodrequest = Product::create($request->all());
-        return response()->json;
+        // $prodrequest = Product::create($request->all());
+         $prodrequest = Product::create([
+            'name' => $request->json()->get('name'),
+            'description' => $request->json()->get('description'),
+            'barcode' => $request->json()->get('barcode'),
+            'statut' => "false",
+            'measure' => $request->json()->get('measure'),
+            'price' => $request->json()->get('price'),
+            'category_id' => $request->json()->get('category_id')
+        ]);
+        return response()->json(['success' => true, 'prodrequest'=> $prodrequest], 201);
     }
 
     /**

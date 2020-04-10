@@ -13,8 +13,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { LoginComponent } from './login/login.component'
 import { HomeComponent } from './home/home.component';
 import { CategoriesComponent } from './categories/categories.component';
-import { InOutComponent } from './in-out/in-out.component';
-import { DisplayTransactionComponent } from './in-out/display-transaction/display-transaction.component';
+// import { InOutComponent } from './in-out/in-out.component';
+import { DisplayTransactionComponent } from './in-out/display-transaction.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { StaffComponent } from './staff/staff.component';
 
@@ -30,7 +30,7 @@ const routes: Routes = [
   {path:'liste_categories', component: CategoriesComponent, canActivate: [AuthGuardService]}, 
   {path:'display_account', component: DisplayAccountComponent, canActivate: [AuthGuardService]},
   {path:'display_transaction', component: DisplayTransactionComponent, canActivate: [AuthGuardService]},
-  {path:'add_transaction', component: InOutComponent, canActivate: [AuthGuardService]},
+  // {path:'add_transaction', component: InOutComponent, canActivate: [AuthGuardService]},
   {path:'inventory', component: InventoryComponent, canActivate: [AuthGuardService]},
 ];
 

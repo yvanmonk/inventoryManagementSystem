@@ -12,9 +12,6 @@
             <h5 style="color:gray">List of Transaction</h5>
             <hr/>
         </div>
-        <button type="button" style="margin-bottom: 30px;" routerLink = "/add_transaction" class="btn btn-outline-primary mr-2" placement="right" ngbTooltip="Add an account">
-            <i class="icon ios-add-outline" style="font-size:15px;"></i>  ADD
-          </button>
         <div *ngIf="updateSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>Success</strong>     You have successfully update an existing transaction.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -45,49 +42,30 @@
                     [dataSource]="dataSource"
                     keyExpr="id"
                     [showBorders]="true"
+                    [columnAutoWidth]="true"
+                    [rowAlternationEnabled]="true"
                     (onRowInserted)="onRowInserted($event)"
                     (onRowUpdated)="onRowUpdated($event)"
                     (onRowRemoved)="onRowRemoved($event)">
-                    <dxo-export [enabled]="true" fileName="Product" [allowExportSelectedData]="true"></dxo-export>
+
+                    <dxo-paging [enabled]="true" [pageSize]="15"></dxo-paging>
+                    <dxo-export [enabled]="true" fileName="Transaction" [allowExportSelectedData]="true"></dxo-export>
                     <dxo-selection mode="multiple"></dxo-selection>
                     <dxo-group-panel [visible]="true"></dxo-group-panel>
-                    <dxo-search-panel
-                    [visible]="true"
-                    [highlightCaseSensitive]="true"></dxo-search-panel>
-                    <dxo-scrolling mode="virtual"></dxo-scrolling>
-                    <dxo-paging [enabled]="false"></dxo-paging>
+                    <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
                     <dxo-remote-operations [filtering]="true"></dxo-remote-operations>
     
-                    <dxo-editing mode="popup" [allowUpdating]="true" [refreshMode]="refreshMode"
+                    <dxo-editing mode="form" [allowUpdating]="true" [refreshMode]="refreshMode"
                     [allowAdding]="true" [allowDeleting]="true">
-                        <dxo-popup
-                            title="Add Transaction"
-                            [showTitle]="true"
-                            [width]="700"
-                            [height]="350"
-                            [position]="{ my: 'center', at: 'center', of: window }">
-                        </dxo-popup>
-                        <dxo-form>
-                            <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
-                                <dxi-item dataField="user_id" caption="Staff"></dxi-item>
-                                <dxi-item dataField="product_id" caption="Product"></dxi-item>
-                            </dxi-item>
-                        </dxo-form>
                     </dxo-editing>
                     
                     <dxi-column dataField="user_id" caption="Staff">
-                        <!-- <dxo-lookup
-                            [dataSource]="staffs"
-                            displayExpr="name"
-                            valueExpr="id">
-                        </dxo-lookup> -->
+                        <dxo-lookup [dataSource]="staffs" displayExpr="name" valueExpr="id"></dxo-lookup>
                     </dxi-column>
                     <dxi-column dataField="product_id" caption="Product" >
-                        <!-- <dxo-lookup
-                            [dataSource]="products"
-                            displayExpr="name"
-                            valueExpr="id">
-                        </dxo-lookup> -->
+                        <dxo-lookup [dataSource]="products" displayExpr="name" valueExpr="id"></dxo-lookup>
+                    </dxi-column>
+                    <dxi-column dataField="state" caption="State" >
                     </dxi-column>
                     
                 </dx-data-grid>

@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\User;
 use App\ProductUser;
+use App\Category;
 
 class ProductUserController extends Controller
 {
+
+       
         /**
      * Display a listing of the resource.
      *
@@ -16,10 +19,8 @@ class ProductUserController extends Controller
      */
     public function index()
     {
-        //
-        $productUser = ProductUser::all();
-        // dd(response()->json($ProductUser));
-        return response()->json($productUser);
+        $productUserId = ProductUser::all();
+        return response()->json( $productUserId );
     }
 
     /**
@@ -27,24 +28,22 @@ class ProductUserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        // $pu = ProductUser::findOrFail($id);
-        // $pu->create($request->json()->all());
-        // $pure = 
-        // $product = Product::findOrFail($id);
-        // $user = User::findOrFail($id);
-        // dd($pu);
-		# Tes categories sous forme de collection !
-		$categories = Category::all();
+    public function create(Request $request, $id){
 
-		# On peut utiliser les méthodes des collections Laravel :
-		$categoriesWithArticlesCount = $categories->map(function($category) {
-		    return ['category' => $category->name, 'articlesCount' => $category->produits()->count()];
-		});
-		dd($categories, $categoriesWithArticlesCount);
-        // $product = Product::all();
-        // $result = ProductUser::all();
+        // $transf = ProductUser::where('product_id', $request->get('product_id'))
+        //             ->where('user_id', $request->get('user_id'))
+        //             ->where('state', 'true')->first();
+        $transf = ProductUser::where('product_id', $request->get('product_id'))
+                    ->where('user_id', $request->get('user_id'))->first();
+
+        if(!$transf){
+            $product = Product::find($id);
+            $product->update([
+                'statut' => 'true'
+            ]);
+            return response()->json(['success' => true, 'product' => $product], 200);
+        }
+         return response()->json(['error' => true, 'message' =>'existe déjà'], 200);
     }
 
     /**
@@ -55,21 +54,23 @@ class ProductUserController extends Controller
      */
     public function store(Request $request)
     {
-        //
-		// $validator = validator::make($request->json()->all(), [
-  //           'product_id' => 'required|number',
-  //           'user_id' => 'required|number'
-  //       ]);
-
-  //       if($validator->fails()){
-  //           return response()->json($validator->errors()->toJson(), 400);
-        // }
-        $transaction = ProductUser::create([
-            'product_id' => $request->json()->get('product_id'),
-            'user_id' => $request->json()->get('user_id')
-        ]);
-        return response()->json(['success' => true, 'transaction'=> $transaction], 201);
+        
+        // $transf = ProductUser::where('product_id', $request->get('product_id'))
+        //             ->where('user_id', $request->get('user_id'))
+        //             ->where('state', 'true')->first();
+        $transf = ProductUser::where('product_id', $request->get('product_id'))
+                    ->where('user_id', $request->get('user_id'))->first();
+        if(!$transf){
+            $transaction = ProductUser::create([
+                'product_id' => $request->json()->get('product_id'),
+                'user_id' => $request->json()->get('user_id'),
+                'state' => "true"
+            ]);
+            return response()->json(['success' => true, 'transaction'=> $transaction], 201);
+        }
+        return response()->json(['error' => false, 'message'=> 'transaction already exist!'], 201);
     }
+
 
     /**
      * Display the specified resource.
@@ -102,7 +103,16 @@ class ProductUserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $product_user = ProductUser::find($id);
+        $product_user->update($request->all());
+        $product= Product::find($request->json()->get('product_id'));
+        $product->update([
+            'statut' => $request->json()->get('state')
+        ]);
+        return response()->json(['success' => true, 
+            'product_user' => $product_user, 
+            'product' => $product
+        ], 200);
     }
 
     /**
@@ -111,8 +121,20 @@ class ProductUserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        $product_user = ProductUser::find($id);
+        $product_user->delete();
+        return response()->json(['success' => true, 'product_user' => $product_user], 200);
     }
+
+    public function destroy_state_product($id)
+    {
+        $product = Product::find($id);
+        $product->update([
+            'statut' => 'false'
+        ]);
+        return response()->json(['success' => true, 'product' => $product], 200);
+    }
+
 }

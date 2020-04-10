@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService, UserAc } from "src/app/services/authentication.service";
 import { AccountService,Employee, State } from '../services/account.service';
+import { DxFormComponent } from 'devextreme-angular';
+import { DxoFormComponent } from 'devextreme-angular/ui/nested';
 
 @Component({
   selector: 'app-display-account',
@@ -10,7 +12,7 @@ import { AccountService,Employee, State } from '../services/account.service';
 })
 
 export class DisplayAccountComponent implements OnInit {
-  
+  @ViewChild(DxoFormComponent, { static: false }) form:DxoFormComponent
   user :  UserAc = {
     id: 0,
     name: '',
@@ -23,22 +25,48 @@ export class DisplayAccountComponent implements OnInit {
     poste: '',
     role: ''
   }
-  dataSource: any;
-  error = null;
-  updateSuccess = null;
-  deletedSuccess = null;
-  insertedSuccess = null;
-  success = null;
-  success_delete = null;
+  dataSource: any
+  error = null
+  updateSuccess = null
+  deletedSuccess = null
+  insertedSuccess = null
+  success = null
+  success_delete = null
+  refreshModes: string[]
+  refreshMode: string
+
+  password = ""
+  passwordOptions: any = {
+    mode: 'password',
+    value: this.password
+  }
   
-  constructor(service: AccountService, private data_account: AuthenticationService) { }
+
+  phonePattern: any = /^\+\s*\(\s*[02-9]\d{2}\)\s*\d{3}\s*-\s*\d{2}\s*-\s*\d{2}\s*-\s*\d{2}$/
+
+  constructor(service: AccountService, private data_account: AuthenticationService) {}
+//   form_fieldDataChanged (ev) {
+//     console.log(ev)
+//     let updatedField = ev.dataField;
+//     let newValue = ev.value;
+//     // Event handling commands go here
+// }
+  passwordComparison = () => {
+    return this.form.instance.option("formData").password
+  }
+  checkComparison() {
+    return true
+  }
   onRowInserted(e) {
-    console.log(e.data)
+  
+    console.log(e)
     this.data_account.create_user(e.data).subscribe(
       insertedResult => {
         this.insertedSuccess = insertedResult.success
         console.log(this.insertedSuccess)
         this.get_user_account()
+        this.refreshMode = "reshape"
+        this.refreshModes = ["full", "reshape", "repaint"]
       },
       error => {
         this.success_delete = error

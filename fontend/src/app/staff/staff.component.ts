@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../services/account.service';
-import { AuthenticationService, UserAc } from '../services/authentication.service';
+import { AuthenticationService, UserAc, UserStaff } from '../services/authentication.service';
 
 @Component({
   selector: 'app-staff',
@@ -9,17 +9,17 @@ import { AuthenticationService, UserAc } from '../services/authentication.servic
   providers: [AccountService, AuthenticationService]
 })
 export class StaffComponent implements OnInit {
-  user :  UserAc = {
+  user :  UserStaff = {
     id: 0,
     name: '',
     first_name: '',
-    email: '',
-    password: '',
+    email: null,
+    password: null,
     phone: '',
     city: '',
     address: '',
     poste: '',
-    role: ''
+    role: 'staff'
   }
   dataSource: any;
   error = null;
@@ -32,10 +32,11 @@ export class StaffComponent implements OnInit {
   constructor(service: AccountService, private data_account: AuthenticationService) { }
   onRowInserted(e) {
     console.log(e.data)
-    this.data_account.create_user(e.data).subscribe(
+    this.data_account.create_staff(e.data).subscribe(
       insertedResult => {
         this.insertedSuccess = insertedResult.success
         console.log(this.insertedSuccess)
+        console.log(insertedResult)
         this.get_user_account()
       },
       error => {
@@ -78,7 +79,7 @@ export class StaffComponent implements OnInit {
     this.get_user_account()
   }
   get_user_account(){
-    this.data_account.display_users().subscribe(
+    this.data_account.display_staff().subscribe(
       user => {
         this.dataSource = user.user;
         console.log(user.user)

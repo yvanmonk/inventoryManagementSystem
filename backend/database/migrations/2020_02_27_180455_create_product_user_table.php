@@ -37,7 +37,7 @@ class CreateProductUserTable extends Migration
     public function down()
 
     {
-        Schema::table('product_staff', function(Blueprint $table) {
+        Schema::table('product_user', function(Blueprint $table) {
             $table->dropForeign('product_user_products_id_foreign');
             $table->dropForeign('product_user_user_id_foreign');
         });
